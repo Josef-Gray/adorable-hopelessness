@@ -26,10 +26,11 @@ while avatar_hp > 0 and enemy_hp > 0:
         print("Avatar hits for " + str(damage) + ". Enemy " +
                 str(enemy_hp) + " HP remaining.")
 
-    damage = randrange(enemy_min_damage, enemy_max_damage + 1)
-    avatar_hp -= damage
-    print("\tEnemy hits for " + str(damage) + ". Avatar " +
-            str(avatar_hp) + " HP remaining.")
+    if enemy_hp > 0:
+        damage = randrange(enemy_min_damage, enemy_max_damage + 1)
+        avatar_hp -= damage
+        print("\tEnemy hits for " + str(damage) + ". Avatar " +
+                str(avatar_hp) + " HP remaining.")
 
 # HP can't be less than 0.
 if avatar_hp < 0:

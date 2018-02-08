@@ -58,6 +58,7 @@ class Mission():
             self.mission_success = True
             logging.info("Success! Avatar won.")
         else:
+            self.avatar_hp = 0
             self.mission_success = False
             logging.info("Failure! Avatar defeated.")
 

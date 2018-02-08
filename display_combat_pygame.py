@@ -55,22 +55,32 @@ def draw_results(screen, bg_color, mission):
     """Draw the results of the last combat."""
     text_color = (0, 0, 0)
     font = pygame.font.SysFont(None, 48)
+    screen_rect = screen.get_rect()
 
     if mission.mission_success is None:
-        msg = ''
+        return
     elif mission.mission_success:
-        msg = 'Success! Avatar won.'
+        result_msg = "Success! Avatar won."
     else:
-        msg = 'Failure! Avatar defeated.'
+        result_msg = "Failure! Avatar defeated."
 
-    # Turn msg into a rendered image and center on the screen.
-    msg_image = font.render(msg, True, text_color, bg_color)
-    msg_image_rect = msg_image.get_rect()
-    screen_rect = screen.get_rect()
-    msg_image_rect.center = screen_rect.center
+    hp_msg = "Avatar HP: " + str(mission.avatar_hp)
+
+    # Render result_msg and position slightly above center on the screen.
+    result_msg_image = font.render(result_msg, True, text_color, bg_color)
+    result_msg_image_rect = result_msg_image.get_rect()
+    result_msg_image_rect.centerx = screen_rect.centerx
+    result_msg_image_rect.bottom = screen_rect.centery - 5
+
+    # Render hp_msg and position slightly below center on the screen.
+    hp_msg_image = font.render(hp_msg, True, text_color, bg_color)
+    hp_msg_image_rect = hp_msg_image.get_rect()
+    hp_msg_image_rect.centerx = screen_rect.centerx
+    hp_msg_image_rect.top = screen_rect.centery + 5
 
     # Draw message.
-    screen.blit(msg_image, msg_image_rect)
+    screen.blit(result_msg_image, result_msg_image_rect)
+    screen.blit(hp_msg_image, hp_msg_image_rect)
 
 
 def draw_stats(screen, bg_color, stats):
@@ -89,7 +99,7 @@ def draw_stats(screen, bg_color, stats):
     losses_image = font.render(
             "Losses: " + str(stats['losses']), True, text_color, bg_color)
     losses_image_rect = losses_image.get_rect()
-    losses_image_rect.top = wins_image_rect.bottom + 10
+    losses_image_rect.top = wins_image_rect.bottom + 5
     losses_image_rect.left = 10
 
     # Draw stats.

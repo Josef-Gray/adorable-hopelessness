@@ -26,7 +26,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 run_combat(mission, stats)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:

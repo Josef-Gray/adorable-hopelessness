@@ -1,0 +1,4 @@
+# https://help.github.com/articles/about-codeowners/
+# Automatically assign default code reviewers for every pull request.
+*	@gvenour @Josef-Gray
+

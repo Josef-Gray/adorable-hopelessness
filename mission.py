@@ -15,7 +15,7 @@ class Mission():
         self.avatar_hp = 10
         self.avatar_min_damage = 1
         self.avatar_max_damage = 3
-        logging.info(
+        logging.debug(
                 "Avatar: " + str(self.avatar_hp) + "HP, "
                 + str(self.avatar_min_damage) + "-"
                 + str(self.avatar_max_damage) + " damage")
@@ -24,7 +24,7 @@ class Mission():
         self.enemy_hp = 10
         self.enemy_min_damage = 1
         self.enemy_max_damage = 2
-        logging.info(
+        logging.debug(
                 "Enemy:  " + str(self.enemy_hp) + "HP, "
                 + str(self.avatar_min_damage) + "-"
                 + str(self.enemy_max_damage) + " damage")
@@ -40,36 +40,30 @@ class Mission():
                 damage = randrange(
                         self.avatar_min_damage, self.avatar_max_damage + 1)
                 self.enemy_hp -= damage
-                logging.info("Avatar hits for " + str(damage) + ". "
+                logging.debug("Avatar hits for " + str(damage) + ". "
                         + "Enemy " + str(self.enemy_hp) + " HP remaining.")
 
             if self.enemy_hp > 0:
                 damage = randrange(
                         self.enemy_min_damage, self.enemy_max_damage + 1)
                 self.avatar_hp -= damage
-                logging.info("\tEnemy hits for " + str(damage) + ". " +
+                logging.debug("\tEnemy hits for " + str(damage) + ". " +
                         "Avatar " + str(self.avatar_hp) + " HP remaining.")
 
-        # HP can't be less than 0.
-        if self.avatar_hp < 0:
-            self.avatar_hp = 0
-        if self.enemy_hp < 0:
-            self.enemy_hp = 0
-
-        logging.info("Avatar: " + str(self.avatar_hp) + "HP")
-        logging.info("Enemy:  " + str(self.enemy_hp) + "HP")
+        logging.debug("Avatar: " + str(self.avatar_hp) + "HP")
+        logging.debug("Enemy:  " + str(self.enemy_hp) + "HP")
 
         # Report results.
         if self.avatar_hp > 0:
             self.mission_success = True
-            logging.info("Success! Avatar wins.")
+            logging.info("Success! Avatar won.")
         else:
             self.mission_success = False
             logging.info("Failure! Avatar defeated.")
 
 
-logging.basicConfig(level=logging.INFO)
-mission = Mission()
-mission.resolve_combat()
-print(mission.mission_success)
+#logging.basicConfig(level=logging.DEBUG)
+#mission = Mission()
+#mission.resolve_combat()
+#print(mission.mission_success)
 

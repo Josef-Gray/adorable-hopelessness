@@ -63,8 +63,10 @@ class Mission():
             logging.info("Failure! Avatar defeated.")
 
 
-#logging.basicConfig(level=logging.DEBUG)
-#mission = Mission()
-#mission.resolve_combat()
-#print(mission.mission_success)
+# Execute this only if running as a standalone
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+    mission = Mission()
+    mission.resolve_combat()
+    logging.debug(mission.mission_success)
 

@@ -42,16 +42,16 @@ class Mission():
             else:
                 break
 
-        logging.debug("Avatar: " + str(avatar.hp) + "HP")
-        logging.debug("Enemy:  " + str(self.enemy.hp) + "HP")
+        logging.debug(avatar.name + ": " + str(avatar.hp) + "HP")
+        logging.debug(self.enemy.name + ":  " + str(self.enemy.hp) + "HP")
 
         # Report results.
         if avatar.hp > 0:
-            logging.info("Success! Avatar won.")
+            logging.info(avatar.name + " won.")
             return True
         else:
             avatar.hp = 0
-            logging.info("Failure! Avatar defeated.")
+            logging.info(avatar.name + " defeated.")
             return False
 
 

@@ -1,6 +1,7 @@
 import sys
 import pygame
 import logging
+import re
 
 import flags
 from mission import Mission
@@ -16,6 +17,40 @@ def run_combat(avatar, mission, stats):
     else:
         stats['losses'] += 1
     return mission_result
+
+
+def draw_name_prompt(screen, bg_color):
+    """Draw the prompt for name input."""
+    text_color = (0, 0, 0)
+    font = pygame.font.SysFont(None, 36)
+    screen_rect = screen.get_rect()
+
+    msg = "Name your character:"
+
+    # Render msg and position left of center on the screen.
+    msg_image = font.render(msg, True, text_color, bg_color)
+    msg_image_rect = msg_image.get_rect()
+    msg_image_rect.right = screen_rect.centerx - 10
+    msg_image_rect.centery = screen_rect.centery
+
+    # Draw message.
+    screen.blit(msg_image, msg_image_rect)
+
+
+def draw_name_input(screen, bg_color, msg):
+    """Draw the name being input."""
+    text_color = (0, 0, 0)
+    font = pygame.font.SysFont(None, 36)
+    screen_rect = screen.get_rect()
+
+    # Render msg and position right of center on the screen.
+    msg_image = font.render(msg, True, text_color, bg_color)
+    msg_image_rect = msg_image.get_rect()
+    msg_image_rect.left = screen_rect.centerx + 10
+    msg_image_rect.centery = screen_rect.centery
+
+    # Draw message.
+    screen.blit(msg_image, msg_image_rect)
 
 
 def draw_results(screen, bg_color, avatar, mission_result):
@@ -85,7 +120,35 @@ def main():
 
     bg_color = (230, 230, 230)
 
-    avatar = Avatar()
+    name_input = ''
+    avatar = None
+
+    # Game loop: Input avatar name
+    while avatar is None:
+
+        # Watch for keyboard and mouse events.
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                # If a "word" character, append to input
+                if re.match(r'\w', event.unicode):
+                    name_input += event.unicode
+                # Backspace deletes the last letter
+                elif event.key == pygame.K_BACKSPACE:
+                    name_input = name_input[:-1]
+                # Return ends name input and creates avatar
+                elif event.key == pygame.K_RETURN:
+                    avatar = Avatar(name_input)
+
+        # Draw screen objects.
+        screen.fill(bg_color)
+        draw_name_prompt(screen, bg_color)
+        draw_name_input(screen, bg_color, name_input)
+
+        # Make the most recently drawn screen visible.
+        pygame.display.flip()
+
     avatar.log_properties()
     mission = Mission()
     mission_result = None

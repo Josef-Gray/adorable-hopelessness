@@ -10,22 +10,23 @@ logging.basicConfig(level=logging.INFO)
 def run_combat(avatar, mission, stats):
     """Run the combat mission."""
     mission.__init__()
-    mission.resolve_combat(avatar)
-    if mission.mission_success:
+    mission_result = mission.resolve_combat(avatar)
+    if mission_result is True:
         stats['wins'] += 1
     else:
         stats['losses'] += 1
+    return mission_result
 
 
-def draw_results(screen, bg_color, avatar, mission):
+def draw_results(screen, bg_color, avatar, mission_result):
     """Draw the results of the last combat."""
     text_color = (0, 0, 0)
     font = pygame.font.SysFont(None, 48)
     screen_rect = screen.get_rect()
 
-    if mission.mission_success is None:
+    if mission_result is None:
         return
-    elif mission.mission_success:
+    elif mission_result is True:
         result_msg = "Success! Avatar won."
     else:
         result_msg = "Failure! Avatar defeated."
@@ -85,6 +86,7 @@ def main():
 
     avatar = Avatar()
     mission = Mission()
+    mission_result = None
     stats = {'wins': 0, 'losses': 0}
 
     # Main game loop
@@ -96,15 +98,15 @@ def main():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 avatar.reset_hp()
-                run_combat(avatar, mission, stats)
+                mission_result = run_combat(avatar, mission, stats)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     avatar.reset_hp()
-                    run_combat(avatar, mission, stats)
+                    mission_result = run_combat(avatar, mission, stats)
 
         # Draw screen objects.
         screen.fill(bg_color)
-        draw_results(screen, bg_color, avatar, mission)
+        draw_results(screen, bg_color, avatar, mission_result)
         draw_stats(screen, bg_color, stats)
 
         # Make the most recently drawn screen visible.

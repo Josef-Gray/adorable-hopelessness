@@ -10,15 +10,19 @@ class Mission():
 
     def __init__(self):
         """Initialize mission attributes."""
-        # Initialize mission_success with no result.
-        self.mission_success = None
-
         # Create an enemy.
         self.enemy = Actor()
         self.enemy.log_properties()
 
     def resolve_combat(self, avatar):
-        """Resolve combat and store result as mission_success."""
+        """Resolve combat.
+        
+        Args:
+            avatar: The player character.
+            
+        Returns:
+            (bool) True if avatar wins, false if avatar loses.
+        """
         # Perform combat
         while avatar.hp > 0 and self.enemy.hp > 0:
             # If the first round, 50% chance to skip the avatar's turn
@@ -43,12 +47,12 @@ class Mission():
 
         # Report results.
         if avatar.hp > 0:
-            self.mission_success = True
             logging.info("Success! Avatar won.")
+            return True
         else:
             avatar.hp = 0
-            self.mission_success = False
             logging.info("Failure! Avatar defeated.")
+            return False
 
 
 # Execute this only if running as a standalone
@@ -56,6 +60,5 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     avatar = Avatar()
     mission = Mission()
-    mission.resolve_combat(avatar)
-    logging.debug(mission.mission_success)
+    logging.debug(mission.resolve_combat(avatar))
 

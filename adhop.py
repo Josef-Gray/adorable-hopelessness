@@ -3,55 +3,21 @@ import pygame
 import logging
 
 from mission import Mission
+from actor import Avatar
 
 logging.basicConfig(level=logging.INFO)
 
-def main():
-    """Run the game."""
-
-    # Initialize game and create a screen object.
-    pygame.init()
-    screen = pygame.display.set_mode((600,400))
-    pygame.display.set_caption("Adorable Hopelessness")
-
-    bg_color = (230, 230, 230)
-
-    mission = Mission()
-    stats = {'wins': 0, 'losses': 0}
-
-    # Main game loop
-    while True:
-
-        # Watch for keyboard and mouse events.
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                run_combat(mission, stats)
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    run_combat(mission, stats)
-
-        # Draw screen objects.
-        screen.fill(bg_color)
-        draw_results(screen, bg_color, mission)
-        draw_stats(screen, bg_color, stats)
-
-        # Make the most recently drawn screen visible.
-        pygame.display.flip()
-
-
-def run_combat(mission, stats):
+def run_combat(avatar, mission, stats):
     """Run the combat mission."""
     mission.__init__()
-    mission.resolve_combat()
+    mission.resolve_combat(avatar)
     if mission.mission_success:
         stats['wins'] += 1
     else:
         stats['losses'] += 1
 
 
-def draw_results(screen, bg_color, mission):
+def draw_results(screen, bg_color, avatar, mission):
     """Draw the results of the last combat."""
     text_color = (0, 0, 0)
     font = pygame.font.SysFont(None, 48)
@@ -64,7 +30,7 @@ def draw_results(screen, bg_color, mission):
     else:
         result_msg = "Failure! Avatar defeated."
 
-    hp_msg = "Avatar HP: " + str(mission.avatar_hp)
+    hp_msg = "Avatar HP: " + str(avatar.hp)
 
     # Render result_msg and position slightly above center on the screen.
     result_msg_image = font.render(result_msg, True, text_color, bg_color)
@@ -105,6 +71,44 @@ def draw_stats(screen, bg_color, stats):
     # Draw stats.
     screen.blit(wins_image, wins_image_rect)
     screen.blit(losses_image, losses_image_rect)
+
+
+def main():
+    """Run the game."""
+
+    # Initialize game and create a screen object.
+    pygame.init()
+    screen = pygame.display.set_mode((600,400))
+    pygame.display.set_caption("Adorable Hopelessness")
+
+    bg_color = (230, 230, 230)
+
+    avatar = Avatar()
+    mission = Mission()
+    stats = {'wins': 0, 'losses': 0}
+
+    # Main game loop
+    while True:
+
+        # Watch for keyboard and mouse events.
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                avatar.reset_hp()
+                run_combat(avatar, mission, stats)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    avatar.reset_hp()
+                    run_combat(avatar, mission, stats)
+
+        # Draw screen objects.
+        screen.fill(bg_color)
+        draw_results(screen, bg_color, avatar, mission)
+        draw_stats(screen, bg_color, stats)
+
+        # Make the most recently drawn screen visible.
+        pygame.display.flip()
 
 
 main()

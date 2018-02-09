@@ -14,7 +14,6 @@ class Actor():
         self.max_damage = 2
         self.reset_hp()
 
-
     def log_properties(self):
         """Log debug information about character properties."""
         logging.debug("Name: " + self.name)
@@ -34,6 +33,4 @@ class Avatar(Actor):
         super().__init__()
         self.name = "Avatar"
         self.max_damage = 3
-
-        self.log_properties()
 

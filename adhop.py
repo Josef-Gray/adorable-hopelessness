@@ -2,10 +2,9 @@ import sys
 import pygame
 import logging
 
+import flags
 from mission import Mission
 from actor import Avatar
-
-logging.basicConfig(level=logging.INFO)
 
 def run_combat(avatar, mission, stats):
     """Run the combat mission."""
@@ -76,6 +75,7 @@ def draw_stats(screen, bg_color, stats):
 
 def main():
     """Run the game."""
+    flags.setup_flags("Adorable Hopelessness RPG.")
 
     # Initialize game and create a screen object.
     pygame.init()

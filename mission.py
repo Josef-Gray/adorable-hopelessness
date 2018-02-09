@@ -3,6 +3,7 @@
 import logging
 from random import randrange
 
+import flags
 from actor import Actor, Avatar
 
 class Mission():
@@ -57,7 +58,7 @@ class Mission():
 
 # Execute this only if running as a standalone
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    flags.setup_flags("Combat mission test module.")
     avatar = Avatar()
     mission = Mission()
     logging.debug(mission.resolve_combat(avatar))

@@ -1,7 +1,8 @@
 """Classes for modeling combat missions."""
 
 import logging
-from random import randrange
+from random import randrange, shuffle
+from itertools import cycle
 
 import flags
 from actor import Actor, Avatar
@@ -12,7 +13,7 @@ class Mission():
     def __init__(self):
         """Initialize mission attributes."""
         # Create an enemy.
-        self.enemy = Actor()
+        self.enemy = Actor('Enemy')
         self.enemy.log_properties()
 
     def resolve_combat(self, avatar):
@@ -24,24 +25,22 @@ class Mission():
         Returns:
             (bool) True if avatar wins, false if avatar loses.
         """
-        # Perform combat
-        while avatar.hp > 0 and self.enemy.hp > 0:
-            # If the first round, 50% chance to skip the avatar's turn
-            if avatar.hp == 10 and randrange(2) == 0:
-                pass
-            else:
-                damage = randrange(
-                        avatar.min_damage, avatar.max_damage + 1)
-                self.enemy.hp -= damage
-                logging.debug("Avatar hits for " + str(damage) + ". "
-                        + "Enemy " + str(self.enemy.hp) + " HP remaining.")
+        # Randomize whether avatar or enemy hits first.
+        actors = [avatar, self.enemy]
+        shuffle(actors)
 
-            if self.enemy.hp > 0:
+        # Perform combat
+        for i in cycle(range(2)):
+            if actors[i].hp > 0:
                 damage = randrange(
-                        self.enemy.min_damage, self.enemy.max_damage + 1)
-                avatar.hp -= damage
-                logging.debug("\tEnemy hits for " + str(damage) + ". " +
-                        "Avatar " + str(avatar.hp) + " HP remaining.")
+                        actors[i].min_damage, actors[i].max_damage + 1)
+                actors[i-1].hp -= damage
+                logging.debug(
+                        actors[i].name + " hits for " + str(damage) + ". "
+                        + actors[i-1].name + " " + str(actors[i-1].hp)
+                        + " HP remaining.")
+            else:
+                break
 
         logging.debug("Avatar: " + str(avatar.hp) + "HP")
         logging.debug("Enemy:  " + str(self.enemy.hp) + "HP")

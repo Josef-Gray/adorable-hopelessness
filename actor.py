@@ -5,10 +5,10 @@ import logging
 class Actor():
     """A representation of a game character."""
 
-    def __init__(self):
+    def __init__(self, name='actor_name'):
         """Initialize character attributes."""
         # Set default attributes.
-        self.name = ''
+        self.name = name
         self.max_hp = 10
         self.min_damage = 1
         self.max_damage = 2
@@ -29,8 +29,8 @@ class Actor():
 class Avatar(Actor):
     """A representation of a player character."""
 
-    def __init__(self):
+    def __init__(self, name='Avatar'):
         super().__init__()
-        self.name = "Avatar"
+        self.name = name
         self.max_damage = 3
 

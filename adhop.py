@@ -8,7 +8,8 @@ from actor import Avatar
 
 def run_combat(avatar, mission, stats):
     """Run the combat mission."""
-    mission.__init__()
+    avatar.reset_hp()
+    mission.enemy.reset_hp()
     mission_result = mission.resolve_combat(avatar)
     if mission_result is True:
         stats['wins'] += 1
@@ -26,11 +27,11 @@ def draw_results(screen, bg_color, avatar, mission_result):
     if mission_result is None:
         return
     elif mission_result is True:
-        result_msg = "Success! Avatar won."
+        result_msg = "Success! " + avatar.name + " won."
     else:
-        result_msg = "Failure! Avatar defeated."
+        result_msg = "Failure! " + avatar.name + " defeated."
 
-    hp_msg = "Avatar HP: " + str(avatar.hp)
+    hp_msg = avatar.name + " HP: " + str(avatar.hp)
 
     # Render result_msg and position slightly above center on the screen.
     result_msg_image = font.render(result_msg, True, text_color, bg_color)
@@ -85,6 +86,7 @@ def main():
     bg_color = (230, 230, 230)
 
     avatar = Avatar()
+    avatar.log_properties()
     mission = Mission()
     mission_result = None
     stats = {'wins': 0, 'losses': 0}
@@ -97,11 +99,9 @@ def main():
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                avatar.reset_hp()
                 mission_result = run_combat(avatar, mission, stats)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    avatar.reset_hp()
                     mission_result = run_combat(avatar, mission, stats)
 
         # Draw screen objects.

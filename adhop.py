@@ -12,8 +12,10 @@ def run_combat(avatar, mission, stats):
     mission_result = mission.resolve_combat(avatar)
     if mission_result is True:
         stats['wins'] += 1
-    else:
+    elif mission_result is False:
         stats['losses'] += 1
+    else:
+        stats['retreats'] += 1
     return mission_result
 
 
@@ -68,9 +70,17 @@ def draw_stats(screen, stats):
     losses_image_rect.top = wins_image_rect.bottom + 5
     losses_image_rect.left = 10
 
+    # Render retreats text and position below wins.
+    retreats_image = font.render(
+            "Retreats: " + str(stats['retreats']), True, text_color)
+    retreats_image_rect = retreats_image.get_rect()
+    retreats_image_rect.top = losses_image_rect.bottom + 5
+    retreats_image_rect.left = 10
+
     # Draw stats.
     screen.blit(wins_image, wins_image_rect)
     screen.blit(losses_image, losses_image_rect)
+    screen.blit(retreats_image, retreats_image_rect)
 
 
 def main():
@@ -90,7 +100,7 @@ def main():
     # Ready to adventure?
     setup.player_ready(screen, bg_color)
 
-    stats = {'wins': 0, 'losses': 0}
+    stats = {'wins': 0, 'losses': 0, 'retreats': 0}
     mission = Mission()
     mission_result = run_combat(avatar, mission, stats)
 

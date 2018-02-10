@@ -4,6 +4,7 @@ import logging
 import re
 
 import flags
+import setup
 from mission import Mission
 from actor import Avatar
 
@@ -17,66 +18,6 @@ def run_combat(avatar, mission, stats):
     else:
         stats['losses'] += 1
     return mission_result
-
-
-def draw_name_prompt(screen):
-    """Draw the prompt for name input."""
-    text_color = (0, 0, 0)
-    font = pygame.font.SysFont(None, 36)
-    screen_rect = screen.get_rect()
-
-    msg = "Name your character:"
-
-    # Render msg and position left of center on the screen.
-    msg_image = font.render(msg, True, text_color)
-    msg_image_rect = msg_image.get_rect()
-    msg_image_rect.right = screen_rect.centerx - 10
-    msg_image_rect.centery = screen_rect.centery
-
-    # Draw message.
-    screen.blit(msg_image, msg_image_rect)
-
-
-def draw_name_input(screen, msg):
-    """Draw the name being input."""
-    text_color = (0, 0, 0)
-    font = pygame.font.SysFont(None, 36)
-    screen_rect = screen.get_rect()
-
-    # Render msg and position right of center on the screen.
-    msg_image = font.render(msg, True, text_color)
-    msg_image_rect = msg_image.get_rect()
-    msg_image_rect.left = screen_rect.centerx + 10
-    msg_image_rect.centery = screen_rect.centery
-
-    # Draw message.
-    screen.blit(msg_image, msg_image_rect)
-
-
-def draw_ready_question(screen):
-    """Draw the prompt for game readiness."""
-    text_color = (0, 0, 0)
-    font = pygame.font.SysFont(None, 36)
-    screen_rect = screen.get_rect()
-
-    question = "Are you ready to adventure?"
-    instruct = "Key SPACE to continue"
-
-    # Render question and position in the center of the screen.
-    question_image = font.render(question, True, text_color)
-    question_image_rect = question_image.get_rect()
-    question_image_rect.center = screen_rect.center
-
-    # Render instruction and position at the center bottom of the
-    # screen.
-    instruct_image = font.render(instruct, True, text_color)
-    instruct_image_rect = instruct_image.get_rect()
-    instruct_image_rect.centerx = screen_rect.centerx
-    instruct_image_rect.bottom = screen_rect.bottom - 10
-
-    # Draw messages.
-    screen.blit(question_image, question_image_rect)
-    screen.blit(instruct_image, instruct_image_rect)
 
 
 def draw_results(screen, avatar, mission_result):
@@ -146,52 +87,11 @@ def main():
 
     bg_color = (230, 230, 230)
 
-    name_input = ''
-    avatar = None
+    # Set player name
+    avatar = setup.set_player_name(screen, bg_color)
 
-    # Game loop: Input avatar name
-    while avatar is None:
-
-        # Watch for keyboard and mouse events.
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                # If a "word" character, append to input
-                if re.match(r'\w', event.unicode):
-                    name_input += event.unicode
-                # Backspace deletes the last letter
-                elif event.key == pygame.K_BACKSPACE:
-                    name_input = name_input[:-1]
-                # Return ends name input and creates avatar
-                elif event.key == pygame.K_RETURN:
-                    avatar = Avatar(name_input)
-                    avatar.log_properties()
-
-        # Draw screen objects.
-        screen.fill(bg_color)
-        draw_name_prompt(screen)
-        draw_name_input(screen, name_input)
-
-        # Make the most recently drawn screen visible.
-        pygame.display.flip()
-
-    # Game loop: Ready
-    game_ready = False
-    while not game_ready:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    game_ready = True
-    
-        # Draw screen objects.
-        screen.fill(bg_color)
-        draw_ready_question(screen)
-
-        # Make the most recently drawn screen visible.
-        pygame.display.flip()
+    # Ready to adventure?
+    setup.player_ready(screen, bg_color)
 
     stats = {'wins': 0, 'losses': 0}
     mission = Mission()

@@ -24,7 +24,7 @@ def draw_results(screen, avatar, mission_result):
     screen_rect = screen.get_rect()
 
     if mission_result is None:
-        return
+        result_msg = avatar.name + " withdrew."
     elif mission_result is True:
         result_msg = "Success! " + avatar.name + " won."
     else:

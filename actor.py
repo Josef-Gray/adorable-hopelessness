@@ -12,6 +12,7 @@ class Actor():
         self.max_hp = 10
         self.min_damage = 1
         self.max_damage = 2
+        self.retreat_ratio = 0
         self.heal()
 
     def log_properties(self):
@@ -36,7 +37,10 @@ class Avatar(Actor):
     """A representation of a player character."""
 
     def __init__(self, name='Avatar'):
+        """Initialize character attributes."""
         super().__init__()
         self.name = name
         self.max_damage = 3
+        self.retreat_ratio = 0.1
+
 

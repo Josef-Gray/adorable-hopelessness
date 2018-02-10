@@ -10,6 +10,7 @@ class CombatBalanceTestCase(unittest.TestCase):
     def test_avatar_l1_enemy_l1(self):
         """Test level 1 avatar vs level 1 enemy."""
         losses = 0
+        retreats = 0
         runs = 10000
         avatar = Avatar()
         mission = Mission()
@@ -17,14 +18,24 @@ class CombatBalanceTestCase(unittest.TestCase):
         for i in range(runs):
             avatar.heal()
             mission.__init__()
-            if not mission.resolve_combat(avatar):
+            mission_result = mission.resolve_combat(avatar)
+            if mission_result is False:
                 losses += 1
+            elif mission_result is None:
+                retreats += 1
 
         loss_ratio = losses / runs
+        retreat_ratio = retreats / runs
+#        print("\nLosses: " + str(loss_ratio)
+#                + "\nRetreats: " + str(retreat_ratio))
         self.assertLessEqual(
-                loss_ratio, 0.15, msg="Losses higher than 15%")
+                loss_ratio, 0.07, msg="Losses higher than 7%")
         self.assertGreaterEqual(
-                loss_ratio, 0.1, msg="Losses lower than 10%")
+                loss_ratio, 0.06, msg="Losses lower than 6%")
+        self.assertLessEqual(
+                retreat_ratio, 0.19, msg="Retreats higher than 19%")
+        self.assertGreaterEqual(
+                retreat_ratio, 0.17, msg="Retreats lower than 17%")
 
 
 class MissionTestCase(unittest.TestCase):

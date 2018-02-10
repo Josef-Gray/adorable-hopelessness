@@ -31,24 +31,27 @@ class Mission():
 
         # Perform combat
         for i in cycle(range(2)):
-            if actors[i].hp > 0:
-                damage = randrange(
-                        actors[i].min_damage, actors[i].max_damage + 1)
-                actors[i-1].hp -= damage
-                logging.debug(
-                        actors[i].name + " hits for " + str(damage) + ". "
-                        + actors[i-1].name + " " + str(actors[i-1].hp)
-                        + " HP remaining.")
-            else:
+            # End combat if actor has hp less than retreat ratio
+            if actors[i].hp <= actors[i].max_hp * actors[i].retreat_ratio:
                 break
+            damage = randrange(
+                    actors[i].min_damage, actors[i].max_damage + 1)
+            actors[i-1].hp -= damage
+            logging.debug(
+                    actors[i].name + " hits for " + str(damage) + ". "
+                    + actors[i-1].name + " " + str(actors[i-1].hp)
+                    + " HP remaining.")
 
         logging.debug(avatar.name + ": " + str(avatar.hp) + "HP")
         logging.debug(self.enemy.name + ":  " + str(self.enemy.hp) + "HP")
 
         # Report results.
-        if avatar.hp > 0:
+        if self.enemy.hp <= 0:
             logging.info(avatar.name + " won.")
             return True
+        elif avatar.hp > 0:
+            logging.info(avatar.name + " withdrew.")
+            return None
         else:
             avatar.hp = 0
             logging.info(avatar.name + " defeated.")

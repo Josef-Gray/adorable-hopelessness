@@ -1,12 +1,9 @@
 import sys
 import pygame
-import logging
-import re
 
 import flags
 import setup
 from mission import Mission
-from actor import Avatar
 
 def run_combat(avatar, mission, stats):
     """Run the combat mission."""

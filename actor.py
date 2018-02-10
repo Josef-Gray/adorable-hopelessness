@@ -12,7 +12,7 @@ class Actor():
         self.max_hp = 10
         self.min_damage = 1
         self.max_damage = 2
-        self.reset_hp()
+        self.heal()
 
     def log_properties(self):
         """Log debug information about character properties."""
@@ -22,8 +22,14 @@ class Actor():
         logging.debug("Max damage: " + str(self.max_damage))
         logging.debug("Min damage: " + str(self.min_damage))
 
-    def reset_hp(self):
-        self.hp = self.max_hp
+    def heal(self, hp=0):
+        """Heal fully (default) or by fixed hp."""
+        # Heal by fixed hp if given (hp can be negative)
+        if hp != 0 and self.hp + hp <= self.max_hp:
+            self.hp += hp
+        # Otherwise heal to full
+        else:
+            self.hp = self.max_hp
 
 
 class Avatar(Actor):

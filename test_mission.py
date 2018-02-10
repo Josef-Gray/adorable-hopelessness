@@ -15,7 +15,7 @@ class CombatBalanceTestCase(unittest.TestCase):
         mission = Mission()
 
         for i in range(runs):
-            avatar.reset_hp()
+            avatar.heal()
             mission.__init__()
             if not mission.resolve_combat(avatar):
                 losses += 1

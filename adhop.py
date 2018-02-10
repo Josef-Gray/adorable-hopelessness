@@ -7,8 +7,8 @@ from mission import Mission
 
 def run_combat(avatar, mission, stats):
     """Run the combat mission."""
-    avatar.reset_hp()
-    mission.enemy.reset_hp()
+    avatar.heal()
+    mission.enemy.heal()
     mission_result = mission.resolve_combat(avatar)
     if mission_result is True:
         stats['wins'] += 1

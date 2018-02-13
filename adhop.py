@@ -23,8 +23,7 @@ def main():
     stats = {'wins': 0, 'losses': 0, 'retreats': 0}
 
     # Create mission list
-    missions = []
-    missions.append(Mission())
+    missions = setup.setup_missions()
 
     # Loop ready / results
     while True:

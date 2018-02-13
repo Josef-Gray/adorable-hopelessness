@@ -10,14 +10,17 @@ from actor import Actor, Avatar
 class Mission():
     """A representation of a combat mission."""
 
-    def __init__(self):
+    def __init__(self, title='Title', enemy_name='Enemy'):
         """Initialize mission attributes."""
-        # Create a title.
-        self.title = "Slay the Rat"
+        # Set the title.
+        self.title = title
 
         # Create an enemy.
-        self.enemy = Actor('Enemy')
+        self.enemy = Actor(enemy_name)
         self.enemy.log_properties()
+
+        # Default result is None.
+        self.result = None
 
     def resolve_combat(self, avatar):
         """Resolve combat.
@@ -51,14 +54,16 @@ class Mission():
         # Report results.
         if self.enemy.hp <= 0:
             logging.info(avatar.name + " won.")
-            return True
+            self.result = True
         elif avatar.hp > 0:
             logging.info(avatar.name + " withdrew.")
-            return None
+            self.result = None
         else:
             avatar.hp = 0
             logging.info(avatar.name + " defeated.")
-            return False
+            self.result = False
+
+        return self.result
 
 
 # Execute this only if running as a standalone

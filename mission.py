@@ -12,6 +12,9 @@ class Mission():
 
     def __init__(self):
         """Initialize mission attributes."""
+        # Create a title.
+        self.title = "Slay the Rat"
+
         # Create an enemy.
         self.enemy = Actor('Enemy')
         self.enemy.log_properties()

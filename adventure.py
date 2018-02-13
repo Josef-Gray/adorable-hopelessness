@@ -5,6 +5,61 @@ import pygame
 
 from stats import draw_stats
 
+def choose_adventure(screen, bg_color, missions):
+    text_color = (0, 0, 0)
+    heading_font = pygame.font.SysFont(None, 42)
+    title_font = pygame.font.SysFont(None, 36)
+    screen_rect = screen.get_rect()
+
+    heading_msg = "Choose an Adventure"
+    
+    # Render heading_msg, position at 0,0, and draw to surface
+    heading_msg_image = heading_font.render(heading_msg, True, text_color)
+    heading_msg_image_rect = heading_msg_image.get_rect()
+    heading_msg_image_rect.centerx = screen_rect.centerx
+    heading_msg_image_rect.y = screen_rect.centery / 2
+
+    # Grab bottom position of the heading for spacing next list entry
+    last_msg_bottom = heading_msg_image_rect.bottom + 5
+
+    # Render mission titles in list
+    title_msgs = []
+    i = 0
+    while i < len(missions):
+        title_msg = missions[i].title
+
+        # Render title_msg and position centered below last line
+        title_msg_image = title_font.render(title_msg, True, text_color)
+        title_msg_rect = title_msg_image.get_rect()
+        title_msg_rect.centerx = screen_rect.centerx
+        title_msg_rect.top = last_msg_bottom + 5
+        title_msgs.append(
+                {'mission': missions[i],
+                    'image': title_msg_image, 'rect': title_msg_rect})
+
+        last_msg_bottom = title_msg_rect.bottom
+
+        i += 1
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for title_msg in title_msgs:
+                    if title_msg['rect'].collidepoint(
+                            pygame.mouse.get_pos()):
+                        return title_msg['mission']
+
+        screen.fill(bg_color)
+        screen.blit(heading_msg_image, heading_msg_image_rect)
+
+        for title_msg in title_msgs:
+            screen.blit(title_msg['image'], title_msg['rect'])
+
+        pygame.display.flip()
+
+
 def start_adventure(screen, bg_color, stats, avatar, mission):
     """Start a new adventure."""
     # Avatar and enemy start with full hp.

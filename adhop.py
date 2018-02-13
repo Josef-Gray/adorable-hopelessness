@@ -3,7 +3,7 @@ import pygame
 
 import flags
 import setup
-from adventure import start_adventure
+from adventure import choose_adventure, start_adventure
 from mission import Mission
 
 def main():
@@ -22,12 +22,17 @@ def main():
 
     stats = {'wins': 0, 'losses': 0, 'retreats': 0}
 
+    # Create mission list
+    missions = []
+    missions.append(Mission())
+
     # Loop ready / results
     while True:
         # Ready to adventure?
         setup.player_ready(screen, bg_color)
 
-        mission = Mission()
+        # Choose an adventure
+        mission = choose_adventure(screen, bg_color, missions)
 
         # Run adventure
         start_adventure(screen, bg_color, stats, avatar, mission)

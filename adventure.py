@@ -12,13 +12,9 @@ def choose_adventure(screen, bg_color, missions):
 
     heading_msg = "Choose an Adventure"
     
-    # Render heading_msg, position at 0,0, and draw to surface
+    # Render heading_msg, position at 0,0 (default), and draw to surface
     heading_msg_image = heading_font.render(heading_msg, True, text_color)
     heading_msg_image_rect = heading_msg_image.get_rect()
-    # Postion heading at (0,0) (other line will be positioned in
-    # relation)
-    heading_msg_image_rect.x = 0
-    heading_msg_image_rect.y = 0
 
     # Grab bottom position of the heading for spacing next list entry
     last_msg_bottom = heading_msg_image_rect.bottom + 5

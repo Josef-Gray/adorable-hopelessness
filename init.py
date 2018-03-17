@@ -6,7 +6,7 @@ from random import choice
 from actor import Avatar
 from mission import Mission
 
-def setup_missions():
+def init_missions():
     """Return list of missions."""
     # Create mission list
     missions = []

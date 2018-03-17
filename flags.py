@@ -3,7 +3,7 @@
 import argparse
 import logging
 
-def setup_flags(description):
+def init_flags(description):
     """Enable standard flags."""
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("-v", "--verbose", help="enable verbose logging",

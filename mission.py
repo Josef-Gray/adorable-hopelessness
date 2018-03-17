@@ -68,7 +68,7 @@ class Mission():
 
 # Execute this only if running as a standalone
 if __name__ == "__main__":
-    flags.setup_flags("Combat mission test module.")
+    flags.init_flags("Combat mission test module.")
     avatar = Avatar()
     mission = Mission()
     logging.debug(mission.resolve_combat(avatar))

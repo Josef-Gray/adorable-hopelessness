@@ -33,7 +33,7 @@ class Screen():
         # Make the most recently drawn bg_surface visible.
         pygame.display.flip()
 
-    def catch_special_events(self):
+    def catch_special_events(self, event):
         """Overridable function for screen-specific events."""
         pass
 

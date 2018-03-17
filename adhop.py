@@ -3,6 +3,7 @@ import pygame
 
 import flags
 import init
+import screen
 from adventure import choose_adventure, start_adventure
 from mission import Mission
 
@@ -28,7 +29,7 @@ def main():
     # Loop ready / results
     while True:
         # Ready to adventure?
-        init.player_ready(bg_surface, bg_color)
+        screen.ReadyScreen(bg_surface, bg_color).run()
 
         # Choose an adventure
         mission = choose_adventure(bg_surface, bg_color, missions)

@@ -10,15 +10,15 @@ def main():
     """Run the game."""
     flags.init_flags("Adorable Hopelessness RPG.")
 
-    # Initialize game and create a screen object.
+    # Initialize game and create a background surface object.
     pygame.init()
-    screen = pygame.display.set_mode((600,400))
+    bg_surface = pygame.display.set_mode((600,400))
     pygame.display.set_caption("Adorable Hopelessness")
 
     bg_color = (230, 230, 230)
 
     # Set player name
-    avatar = init.set_player_name(screen, bg_color)
+    avatar = init.set_player_name(bg_surface, bg_color)
 
     stats = {'wins': 0, 'losses': 0, 'retreats': 0}
 
@@ -28,13 +28,13 @@ def main():
     # Loop ready / results
     while True:
         # Ready to adventure?
-        init.player_ready(screen, bg_color)
+        init.player_ready(bg_surface, bg_color)
 
         # Choose an adventure
-        mission = choose_adventure(screen, bg_color, missions)
+        mission = choose_adventure(bg_surface, bg_color, missions)
 
         # Run adventure
-        start_adventure(screen, bg_color, stats, avatar, mission)
+        start_adventure(bg_surface, bg_color, stats, avatar, mission)
 
 
 main()

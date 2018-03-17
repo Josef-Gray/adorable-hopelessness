@@ -2,7 +2,7 @@
 
 import pygame
 
-def draw_stats(screen, stats):
+def draw_stats(bg_surface, stats):
     """Draw running statistics of wins and losses."""
     text_color = (100, 100, 100)
     font = pygame.font.SysFont(None, 32)
@@ -29,7 +29,7 @@ def draw_stats(screen, stats):
     retreats_image_rect.left = 10
 
     # Draw stats.
-    screen.blit(wins_image, wins_image_rect)
-    screen.blit(losses_image, losses_image_rect)
-    screen.blit(retreats_image, retreats_image_rect)
+    bg_surface.blit(wins_image, wins_image_rect)
+    bg_surface.blit(losses_image, losses_image_rect)
+    bg_surface.blit(retreats_image, retreats_image_rect)
 

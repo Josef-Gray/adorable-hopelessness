@@ -19,68 +19,68 @@ def init_missions():
     return missions
 
 
-def draw_name_prompt(screen):
+def draw_name_prompt(bg_surface):
     """Draw the prompt for name input."""
     text_color = (0, 0, 0)
     font = pygame.font.SysFont(None, 36)
-    screen_rect = screen.get_rect()
+    bg_surface_rect = bg_surface.get_rect()
 
     msg = "Name your character:"
 
-    # Render msg and position left of center on the screen.
+    # Render msg and position left of center on bg_surface.
     msg_image = font.render(msg, True, text_color)
     msg_image_rect = msg_image.get_rect()
-    msg_image_rect.right = screen_rect.centerx - 10
-    msg_image_rect.centery = screen_rect.centery
+    msg_image_rect.right = bg_surface_rect.centerx - 10
+    msg_image_rect.centery = bg_surface_rect.centery
 
     # Draw message.
-    screen.blit(msg_image, msg_image_rect)
+    bg_surface.blit(msg_image, msg_image_rect)
 
 
-def draw_name_input(screen, msg):
+def draw_name_input(bg_surface, msg):
     """Draw the name being input."""
     text_color = (0, 0, 0)
     font = pygame.font.SysFont(None, 36)
-    screen_rect = screen.get_rect()
+    bg_surface_rect = bg_surface.get_rect()
 
-    # Render msg and position right of center on the screen.
+    # Render msg and position right of center on bg_surface.
     msg_image = font.render(msg, True, text_color)
     msg_image_rect = msg_image.get_rect()
-    msg_image_rect.left = screen_rect.centerx + 10
-    msg_image_rect.centery = screen_rect.centery
+    msg_image_rect.left = bg_surface_rect.centerx + 10
+    msg_image_rect.centery = bg_surface_rect.centery
 
     # Draw message.
-    screen.blit(msg_image, msg_image_rect)
+    bg_surface.blit(msg_image, msg_image_rect)
 
 
-def draw_ready_question(screen):
+def draw_ready_question(bg_surface):
     """Draw the prompt for game readiness."""
-    screen_rect = screen.get_rect()
+    bg_surface_rect = bg_surface.get_rect()
 
-    # Render question and position in the center of the screen.
+    # Render question and position in the center of bg_surface.
     ready = "Are you ready to adventure?"
     ready_text_color = (0, 0, 0)
     ready_font = pygame.font.SysFont(None, 36)
     ready_image = ready_font.render(ready, True, ready_text_color)
     ready_image_rect = ready_image.get_rect()
-    ready_image_rect.center = screen_rect.center
+    ready_image_rect.center = bg_surface_rect.center
 
-    # Render instruction and position at the center bottom of the
-    # screen.
+    # Render instruction and position at the center bottom of
+    # bg_surface.
     inst = "Press SPACE to continue"
     inst_text_color = (100, 100, 100)
     inst_font = pygame.font.SysFont(None, 32)
     inst_image = inst_font.render(inst, True, inst_text_color)
     inst_image_rect = inst_image.get_rect()
-    inst_image_rect.centerx = screen_rect.centerx
-    inst_image_rect.bottom = screen_rect.bottom - 10
+    inst_image_rect.centerx = bg_surface_rect.centerx
+    inst_image_rect.bottom = bg_surface_rect.bottom - 10
 
     # Draw messages.
-    screen.blit(ready_image, ready_image_rect)
-    screen.blit(inst_image, inst_image_rect)
+    bg_surface.blit(ready_image, ready_image_rect)
+    bg_surface.blit(inst_image, inst_image_rect)
 
 
-def set_player_name(screen, bg_color):
+def set_player_name(bg_surface, bg_color):
     """Set player name.
 
     Returns:
@@ -106,16 +106,16 @@ def set_player_name(screen, bg_color):
                     avatar.log_properties()
                     return avatar
 
-        # Draw screen objects.
-        screen.fill(bg_color)
-        draw_name_prompt(screen)
-        draw_name_input(screen, name_input)
+        # Draw objects.
+        bg_surface.fill(bg_color)
+        draw_name_prompt(bg_surface)
+        draw_name_input(bg_surface, name_input)
 
-        # Make the most recently drawn screen visible.
+        # Make the most recently drawn bg_surface visible.
         pygame.display.flip()
 
 
-def player_ready(screen, bg_color):
+def player_ready(bg_surface, bg_color):
     """Ask player if ready to play."""
     while True:
         for event in pygame.event.get():
@@ -125,11 +125,11 @@ def player_ready(screen, bg_color):
                 if event.key == pygame.K_SPACE:
                     return
     
-        # Draw screen objects.
-        screen.fill(bg_color)
-        draw_ready_question(screen)
+        # Draw objects.
+        bg_surface.fill(bg_color)
+        draw_ready_question(bg_surface)
 
-        # Make the most recently drawn screen visible.
+        # Make the most recently drawn bg_surface visible.
         pygame.display.flip()
 
 

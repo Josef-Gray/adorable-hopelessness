@@ -1,23 +1,8 @@
 import sys
 import pygame
 import re
-from random import choice
 
 from actor import Avatar
-from mission import Mission
-
-def init_missions():
-    """Return list of missions."""
-    # Create mission list
-    missions = []
-    missions.append(Mission('Slay the Rat', 'Rat'))
-
-    titles = ['Storm the Castle']
-    enemies = ['Goblin']
-    missions.append(Mission(choice(titles), choice(enemies)))
-
-    return missions
-
 
 def draw_name_prompt(bg_surface):
     """Draw the prompt for name input."""

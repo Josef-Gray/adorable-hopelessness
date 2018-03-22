@@ -6,7 +6,7 @@ import init
 from stats import Statistics
 import screen
 from adventure import choose_adventure
-from mission import Mission
+from mission import MissionList
 
 def main():
     """Run the game."""
@@ -26,7 +26,7 @@ def main():
     stats = Statistics()
 
     # Create mission list
-    missions = init.init_missions()
+    mission_list = MissionList()
 
     # Loop ready / results
     while True:
@@ -34,11 +34,11 @@ def main():
         screen.ReadyScreen(bg_surface, bg_color).run()
 
         # Choose an adventure
-        mission = choose_adventure(bg_surface, bg_color, missions)
+        choose_adventure(bg_surface, bg_color, mission_list)
 
         # Run adventure
         screen.AdventureResultScreen(bg_surface, bg_color, stats,
-                avatar, mission).run()
+                avatar, mission_list.get_active_mission()).run()
 
 
 main()

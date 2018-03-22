@@ -3,7 +3,7 @@
 import sys
 import pygame
 
-def choose_adventure(bg_surface, bg_color, missions):
+def choose_adventure(bg_surface, bg_color, mission_list):
     text_color = (0, 0, 0)
     heading_font = pygame.font.SysFont(None, 42)
     title_font = pygame.font.SysFont(None, 36)
@@ -19,7 +19,7 @@ def choose_adventure(bg_surface, bg_color, missions):
 
     # Render mission titles in list
     title_msgs = []
-    for mission in missions:
+    for mission in mission_list.missions:
         title_msg = mission.title
 
         # Render title_msg and position centered below last line
@@ -53,7 +53,8 @@ def choose_adventure(bg_surface, bg_color, missions):
                             (title_msg['rect'].width,
                                 title_msg['rect'].height))
                     if rect.collidepoint(pygame.mouse.get_pos()):
-                        return title_msg['mission']
+                        mission_list.set_active_mission(title_msg['mission'])
+                        return
 
         bg_surface.fill(bg_color)
         # Have to use background color, not surface.set_alpha(0)

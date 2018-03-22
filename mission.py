@@ -1,7 +1,7 @@
 """Classes for modeling combat missions."""
 
 import logging
-from random import randrange, shuffle
+from random import randrange, shuffle, choice
 from itertools import cycle
 
 import flags
@@ -64,6 +64,32 @@ class Mission():
             self.result = False
 
         return self.result
+
+
+class MissionList():
+    """A set of runnable missions."""
+
+    def __init__(self):
+        """Initialize mission list attributes."""
+        self.active_mission = None
+        self.build_mission_list()
+
+    def build_mission_list(self):
+        """Populate mission list."""
+        self.missions = []
+        self.missions.append(Mission('Slay the Rat', 'Rat'))
+
+        titles = ['Storm the Castle']
+        enemies = ['Goblin']
+        self.missions.append(Mission(choice(titles), choice(enemies)))
+
+    def get_active_mission(self):
+        """Return the active mission."""
+        return self.active_mission
+
+    def set_active_mission(self, mission):
+        """Set the active mission."""
+        self.active_mission = mission
 
 
 # Execute this only if running as a standalone

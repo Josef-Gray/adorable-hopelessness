@@ -9,7 +9,12 @@ class Screen():
     def __init__(self, bg_surface, bg_color):
         """Initialize screen attributes."""
         self.bg_surface = bg_surface
+        self.bg_surface_rect = self.bg_surface.get_rect()
         self.bg_color = bg_color
+
+        self.text_color = (0, 0, 0)
+        self.title_font = pygame.font.SysFont(None, 42)
+        self.basic_font = pygame.font.SysFont(None, 36)
 
         # Create screen in inactive state.
         self.active = False
@@ -68,15 +73,11 @@ class ReadyScreen(Screen):
 
     def draw_objects(self):
         """Draw the prompt for game readiness."""
-        bg_surface_rect = self.bg_surface.get_rect()
-
         # Render question and position in the center of bg_surface.
         ready = "Are you ready to adventure?"
-        ready_text_color = (0, 0, 0)
-        ready_font = pygame.font.SysFont(None, 36)
-        ready_image = ready_font.render(ready, True, ready_text_color)
+        ready_image = self.basic_font.render(ready, True, self.text_color)
         ready_image_rect = ready_image.get_rect()
-        ready_image_rect.center = bg_surface_rect.center
+        ready_image_rect.center = self.bg_surface_rect.center
 
         # Render instruction and position at the center bottom of
         # bg_surface.
@@ -85,8 +86,8 @@ class ReadyScreen(Screen):
         inst_font = pygame.font.SysFont(None, 32)
         inst_image = inst_font.render(inst, True, inst_text_color)
         inst_image_rect = inst_image.get_rect()
-        inst_image_rect.centerx = bg_surface_rect.centerx
-        inst_image_rect.bottom = bg_surface_rect.bottom - 10
+        inst_image_rect.centerx = self.bg_surface_rect.centerx
+        inst_image_rect.bottom = self.bg_surface_rect.bottom - 10
 
         # Draw messages.
         self.bg_surface.blit(ready_image, ready_image_rect)
@@ -97,6 +98,7 @@ class AdventureResultScreen(Screen):
     """The adventure result screen."""
 
     def __init__(self, bg_surface, bg_color, stats, avatar, mission):
+        """Initialize screen attributes."""
         super().__init__(bg_surface, bg_color)
         self.stats = stats
         self.avatar = avatar
@@ -121,10 +123,6 @@ class AdventureResultScreen(Screen):
 
     def draw_results(self):
         """Draw the results of the last combat."""
-        text_color = (0, 0, 0)
-        title_font = pygame.font.SysFont(None, 42)
-        result_font = pygame.font.SysFont(None, 36)
-        bg_surface_rect = self.bg_surface.get_rect()
 
         if self.mission.result is None:
             result_msg = self.avatar.name + " withdrew."
@@ -136,21 +134,21 @@ class AdventureResultScreen(Screen):
         hp_msg = self.avatar.name + " HP: " + str(self.avatar.hp)
 
         # Render mission title and position slightly above center on bg_surface.
-        title_msg_image = title_font.render(self.mission.title, True, text_color)
+        title_msg_image = self.title_font.render(self.mission.title, True, self.text_color)
         title_msg_image_rect = title_msg_image.get_rect()
-        title_msg_image_rect.centerx = bg_surface_rect.centerx
-        title_msg_image_rect.bottom = bg_surface_rect.centery - 5
+        title_msg_image_rect.centerx = self.bg_surface_rect.centerx
+        title_msg_image_rect.bottom = self.bg_surface_rect.centery - 5
 
         # Render result_msg and position slightly below center on bg_surface.
-        result_msg_image = result_font.render(result_msg, True, text_color)
+        result_msg_image = self.basic_font.render(result_msg, True, self.text_color)
         result_msg_image_rect = result_msg_image.get_rect()
-        result_msg_image_rect.centerx = bg_surface_rect.centerx
-        result_msg_image_rect.top = bg_surface_rect.centery + 5
+        result_msg_image_rect.centerx = self.bg_surface_rect.centerx
+        result_msg_image_rect.top = self.bg_surface_rect.centery + 5
 
         # Render hp_msg and position below result_msg on bg_surface.
-        hp_msg_image = result_font.render(hp_msg, True, text_color)
+        hp_msg_image = self.basic_font.render(hp_msg, True, self.text_color)
         hp_msg_image_rect = hp_msg_image.get_rect()
-        hp_msg_image_rect.centerx = bg_surface_rect.centerx
+        hp_msg_image_rect.centerx = self.bg_surface_rect.centerx
         hp_msg_image_rect.top = result_msg_image_rect.bottom + 5
 
         # Draw messages.

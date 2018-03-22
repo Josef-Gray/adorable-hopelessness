@@ -108,14 +108,7 @@ class AdventureResultScreen(Screen):
 
         # Resolve combat result.
         self.mission.resolve_combat(avatar)
-
-        # Record statistics
-        if self.mission.result is True:
-            self.stats['wins'] += 1
-        elif self.mission.result is False:
-            self.stats['losses'] += 1
-        else:
-            self.stats['retreats'] += 1
+        self.stats.update(self.mission.result)
 
     def catch_special_events(self, event):
         """Catch screen-specific events."""
@@ -124,7 +117,7 @@ class AdventureResultScreen(Screen):
     def draw_objects(self):
         """Draw screen objects."""
         self.draw_results()
-        self.draw_stats()
+        self.stats.draw(self.bg_surface)
 
     def draw_results(self):
         """Draw the results of the last combat."""
@@ -164,35 +157,4 @@ class AdventureResultScreen(Screen):
         self.bg_surface.blit(title_msg_image, title_msg_image_rect)
         self.bg_surface.blit(result_msg_image, result_msg_image_rect)
         self.bg_surface.blit(hp_msg_image, hp_msg_image_rect)
-
-    def draw_stats(self):
-        """Draw running statistics of wins and losses."""
-        text_color = (100, 100, 100)
-        font = pygame.font.SysFont(None, 32)
-
-        # Render wins text and position in upper left corner.
-        wins_image = font.render(
-                "Wins: " + str(self.stats['wins']), True, text_color)
-        wins_image_rect = wins_image.get_rect()
-        wins_image_rect.top = 10
-        wins_image_rect.left = 10
-
-        # Render losses text and position below wins.
-        losses_image = font.render(
-                "Losses: " + str(self.stats['losses']), True, text_color)
-        losses_image_rect = losses_image.get_rect()
-        losses_image_rect.top = wins_image_rect.bottom + 5
-        losses_image_rect.left = 10
-
-        # Render retreats text and position below wins.
-        retreats_image = font.render(
-                "Retreats: " + str(self.stats['retreats']), True, text_color)
-        retreats_image_rect = retreats_image.get_rect()
-        retreats_image_rect.top = losses_image_rect.bottom + 5
-        retreats_image_rect.left = 10
-
-        # Draw stats.
-        self.bg_surface.blit(wins_image, wins_image_rect)
-        self.bg_surface.blit(losses_image, losses_image_rect)
-        self.bg_surface.blit(retreats_image, retreats_image_rect)
 

@@ -3,8 +3,9 @@ import pygame
 
 import flags
 import init
+from stats import Statistics
 import screen
-from adventure import choose_adventure, start_adventure
+from adventure import choose_adventure
 from mission import Mission
 
 def main():
@@ -21,7 +22,8 @@ def main():
     # Set player name
     avatar = init.set_player_name(bg_surface, bg_color)
 
-    stats = {'wins': 0, 'losses': 0, 'retreats': 0}
+    # Initialize stats
+    stats = Statistics()
 
     # Create mission list
     missions = init.init_missions()
@@ -35,7 +37,6 @@ def main():
         mission = choose_adventure(bg_surface, bg_color, missions)
 
         # Run adventure
-        #start_adventure(bg_surface, bg_color, stats, avatar, mission)
         screen.AdventureResultScreen(bg_surface, bg_color, stats,
                 avatar, mission).run()
 

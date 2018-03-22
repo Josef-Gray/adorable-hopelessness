@@ -5,7 +5,6 @@ import flags
 import init
 from stats import Statistics
 import screen
-from adventure import choose_adventure
 from mission import MissionList
 
 def main():
@@ -34,7 +33,8 @@ def main():
         screen.ReadyScreen(bg_surface, bg_color).run()
 
         # Choose an adventure
-        choose_adventure(bg_surface, bg_color, mission_list)
+        screen.AdventureMenuScreen(bg_surface, bg_color,
+                mission_list).run()
 
         # Run adventure
         screen.AdventureResultScreen(bg_surface, bg_color, stats,

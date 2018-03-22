@@ -35,7 +35,9 @@ def main():
         mission = choose_adventure(bg_surface, bg_color, missions)
 
         # Run adventure
-        start_adventure(bg_surface, bg_color, stats, avatar, mission)
+        #start_adventure(bg_surface, bg_color, stats, avatar, mission)
+        screen.AdventureResultScreen(bg_surface, bg_color, stats,
+                avatar, mission).run()
 
 
 main()

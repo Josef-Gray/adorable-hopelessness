@@ -2,6 +2,7 @@
 
 import sys
 import pygame
+import re
 
 class Screen():
     """A representation of a game screen."""
@@ -15,6 +16,9 @@ class Screen():
         self.text_color = (0, 0, 0)
         self.title_font = pygame.font.SysFont(None, 42)
         self.basic_font = pygame.font.SysFont(None, 36)
+
+        # Render fixed objects.
+        self.prep_objects()
 
         # Create screen in inactive state.
         self.active = False
@@ -60,8 +64,63 @@ class Screen():
         pass
 
     def draw_objects(self):
-        """Overridable function for screen-specific objects."""
+        """Overridable function for drawing screen-specific objects."""
         pass
+
+    def prep_objects(self):
+        """Overridable function for rendering screen-specific objects."""
+        pass
+
+
+class PlayerNameScreen(Screen):
+    """The player name input screen."""
+
+    def __init__(self, bg_surface, bg_color, avatar):
+        """Initialize screen attributes."""
+        super().__init__(bg_surface, bg_color)
+        self.avatar = avatar
+        self.name_input = ''
+
+    def catch_special_events(self, event):
+        """Catch screen-specific events."""
+        if event.type == pygame.KEYDOWN:
+            # If a "word" character, append to input
+            if re.match(r'\w', event.unicode):
+                self.name_input += event.unicode
+            # Backspace deletes the last letter
+            elif event.key == pygame.K_BACKSPACE:
+                self.name_input = self.name_input[:-1]
+            # Return ends name input and creates avatar
+            elif event.key == pygame.K_RETURN:
+                self.avatar.name = self.name_input
+                self.avatar.log_properties()
+                self.active = False
+
+    def draw_objects(self):
+        """Draw screen objects."""
+        # Draw name prompt.
+        self.bg_surface.blit(
+                self.name_prompt_image, self.name_prompt_image_rect)
+
+        # Render name input and position right of center on bg_surface.
+        name_input_image = self.basic_font.render(
+                self.name_input, True, self.text_color)
+        name_input_image_rect = name_input_image.get_rect()
+        name_input_image_rect.left = self.bg_surface_rect.centerx + 10
+        name_input_image_rect.centery = self.bg_surface_rect.centery
+
+        # Draw name input.
+        self.bg_surface.blit(name_input_image, name_input_image_rect)
+
+    def prep_objects(self):
+        """Prepare fixed objects for drawing to the screen."""
+        self.name_prompt = "Name your character:"
+
+        # Render name prompt and position left of center on bg_surface.
+        self.name_prompt_image = self.basic_font.render(self.name_prompt, True, self.text_color)
+        self.name_prompt_image_rect = self.name_prompt_image.get_rect()
+        self.name_prompt_image_rect.right = self.bg_surface_rect.centerx - 10
+        self.name_prompt_image_rect.centery = self.bg_surface_rect.centery
 
 
 class ReadyScreen(Screen):
@@ -99,9 +158,8 @@ class AdventureMenuScreen(Screen):
 
     def __init__(self, bg_surface, bg_color, mission_list):
         """Initialize screen attributes."""
-        super().__init__(bg_surface, bg_color)
         self.mission_list = mission_list
-        self.prep_objects()
+        super().__init__(bg_surface, bg_color)
 
     def catch_special_events(self, event):
         """Catch screen-specific events."""

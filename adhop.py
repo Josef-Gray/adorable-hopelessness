@@ -2,10 +2,10 @@ import sys
 import pygame
 
 import flags
-import init
+from actor import Avatar
 from stats import Statistics
-import screen
 from mission import MissionList
+import screen
 
 def main():
     """Run the game."""
@@ -19,7 +19,8 @@ def main():
     bg_color = (230, 230, 230)
 
     # Set player name
-    avatar = init.set_player_name(bg_surface, bg_color)
+    avatar = Avatar()
+    screen.PlayerNameScreen(bg_surface, bg_color, avatar).run()
 
     # Initialize stats
     stats = Statistics()

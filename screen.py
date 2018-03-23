@@ -7,11 +7,10 @@ import re
 class Screen():
     """A representation of a game screen."""
 
-    def __init__(self, bg_surface, bg_color):
+    def __init__(self, bg):
         """Initialize screen attributes."""
-        self.bg_surface = bg_surface
-        self.bg_surface_rect = self.bg_surface.get_rect()
-        self.bg_color = bg_color
+        self.bg = bg
+        self.bg_rect = self.bg.surface.get_rect()
 
         self.text_color = (0, 0, 0)
         self.title_font = pygame.font.SysFont(None, 42)
@@ -38,12 +37,12 @@ class Screen():
     def display(self):
         """Draw and display the screen."""
         # Fill background color.
-        self.bg_surface.fill(self.bg_color)
+        self.bg.surface.fill(self.bg.color)
 
         # Draw objects.
         self.draw_objects()
 
-        # Make the most recently drawn bg_surface visible.
+        # Make the most recently drawn bg.surface visible.
         pygame.display.flip()
 
     def catch_events(self):
@@ -75,9 +74,9 @@ class Screen():
 class PlayerNameScreen(Screen):
     """The player name input screen."""
 
-    def __init__(self, bg_surface, bg_color, avatar):
+    def __init__(self, bg, avatar):
         """Initialize screen attributes."""
-        super().__init__(bg_surface, bg_color)
+        super().__init__(bg)
         self.avatar = avatar
         self.name_input = ''
 
@@ -99,28 +98,28 @@ class PlayerNameScreen(Screen):
     def draw_objects(self):
         """Draw screen objects."""
         # Draw name prompt.
-        self.bg_surface.blit(
+        self.bg.surface.blit(
                 self.name_prompt_image, self.name_prompt_image_rect)
 
-        # Render name input and position right of center on bg_surface.
+        # Render name input and position right of center on bg.surface.
         name_input_image = self.basic_font.render(
                 self.name_input, True, self.text_color)
         name_input_image_rect = name_input_image.get_rect()
-        name_input_image_rect.left = self.bg_surface_rect.centerx + 10
-        name_input_image_rect.centery = self.bg_surface_rect.centery
+        name_input_image_rect.left = self.bg_rect.centerx + 10
+        name_input_image_rect.centery = self.bg_rect.centery
 
         # Draw name input.
-        self.bg_surface.blit(name_input_image, name_input_image_rect)
+        self.bg.surface.blit(name_input_image, name_input_image_rect)
 
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
         self.name_prompt = "Name your character:"
 
-        # Render name prompt and position left of center on bg_surface.
+        # Render name prompt and position left of center on bg.surface.
         self.name_prompt_image = self.basic_font.render(self.name_prompt, True, self.text_color)
         self.name_prompt_image_rect = self.name_prompt_image.get_rect()
-        self.name_prompt_image_rect.right = self.bg_surface_rect.centerx - 10
-        self.name_prompt_image_rect.centery = self.bg_surface_rect.centery
+        self.name_prompt_image_rect.right = self.bg_rect.centerx - 10
+        self.name_prompt_image_rect.centery = self.bg_rect.centery
 
 
 class ReadyScreen(Screen):
@@ -132,36 +131,36 @@ class ReadyScreen(Screen):
 
     def draw_objects(self):
         """Draw the prompt for game readiness."""
-        self.bg_surface.blit(self.ready_image, self.ready_image_rect)
-        self.bg_surface.blit(self.inst_image, self.inst_image_rect)
+        self.bg.surface.blit(self.ready_image, self.ready_image_rect)
+        self.bg.surface.blit(self.inst_image, self.inst_image_rect)
 
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
-        # Render question and position in the center of bg_surface.
+        # Render question and position in the center of bg.surface.
         ready_msg = "Are you ready to adventure?"
         self.ready_image = self.basic_font.render(
                 ready_msg, True, self.text_color)
         self.ready_image_rect = self.ready_image.get_rect()
-        self.ready_image_rect.center = self.bg_surface_rect.center
+        self.ready_image_rect.center = self.bg_rect.center
 
         # Render instruction and position at the center bottom of
-        # bg_surface.
+        # bg.surface.
         inst_msg = "Press SPACE to continue"
         inst_text_color = (100, 100, 100)
         inst_font = pygame.font.SysFont(None, 32)
         self.inst_image = inst_font.render(inst_msg, True, inst_text_color)
         self.inst_image_rect = self.inst_image.get_rect()
-        self.inst_image_rect.centerx = self.bg_surface_rect.centerx
-        self.inst_image_rect.bottom = self.bg_surface_rect.bottom - 10
+        self.inst_image_rect.centerx = self.bg_rect.centerx
+        self.inst_image_rect.bottom = self.bg_rect.bottom - 10
 
 
 class AdventureMenuScreen(Screen):
     """The "choose an adventure" screen."""
 
-    def __init__(self, bg_surface, bg_color, mission_list):
+    def __init__(self, bg, mission_list):
         """Initialize screen attributes."""
         self.mission_list = mission_list
-        super().__init__(bg_surface, bg_color)
+        super().__init__(bg)
 
     def catch_special_events(self, event):
         """Catch screen-specific events."""
@@ -179,7 +178,7 @@ class AdventureMenuScreen(Screen):
     def draw_objects(self):
         """Draw screen objects."""
         # Fill background color
-        self.menu_surface.fill(self.bg_color)
+        self.menu_surface.fill(self.bg.color)
 
         # Draw to menu_surface
         self.menu_surface.blit(self.heading_msg_image, (0,0))
@@ -187,15 +186,16 @@ class AdventureMenuScreen(Screen):
             self.menu_surface.blit(title_msg['image'],
                     title_msg['rect'])
 
-        # Draw menu to bg_surface
-        self.bg_surface.blit(self.menu_surface, self.menu_surface_rect)
+        # Draw menu to bg.surface
+        self.bg.surface.blit(self.menu_surface, self.menu_surface_rect)
 
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
         heading_msg = "Choose an Adventure"
 
         # Render heading_msg
-        self.heading_msg_image = self.title_font.render(heading_msg, True, self.text_color)
+        self.heading_msg_image = self.title_font.render(
+                heading_msg, True, self.text_color)
         heading_msg_image_rect = self.heading_msg_image.get_rect()
 
         # Grab bottom position of the heading for spacing next list entry
@@ -222,13 +222,13 @@ class AdventureMenuScreen(Screen):
         self.menu_surface = pygame.Surface((heading_msg_image_rect.width,
                                  last_msg_bottom))
         self.menu_surface_rect = self.menu_surface.get_rect()
-        self.menu_surface_rect.center = self.bg_surface_rect.center
+        self.menu_surface_rect.center = self.bg_rect.center
 
 
 class AdventureResultScreen(Screen):
     """The adventure result screen."""
 
-    def __init__(self, bg_surface, bg_color, stats, avatar, mission):
+    def __init__(self, bg, stats, avatar, mission):
         """Initialize screen attributes."""
         self.stats = stats
         self.avatar = avatar
@@ -242,7 +242,7 @@ class AdventureResultScreen(Screen):
         self.mission.resolve_combat(avatar)
         self.stats.update(self.mission.result)
 
-        super().__init__(bg_surface, bg_color)
+        super().__init__(bg)
 
     def catch_special_events(self, event):
         """Catch screen-specific events."""
@@ -250,11 +250,11 @@ class AdventureResultScreen(Screen):
 
     def draw_objects(self):
         """Draw screen objects."""
-        self.bg_surface.blit(self.title_msg_image, self.title_msg_image_rect)
-        self.bg_surface.blit(self.result_msg_image, self.result_msg_image_rect)
-        self.bg_surface.blit(self.hp_msg_image, self.hp_msg_image_rect)
+        self.bg.surface.blit(self.title_msg_image, self.title_msg_image_rect)
+        self.bg.surface.blit(self.result_msg_image, self.result_msg_image_rect)
+        self.bg.surface.blit(self.hp_msg_image, self.hp_msg_image_rect)
 
-        self.stats.draw(self.bg_surface)
+        self.stats.draw(self.bg)
 
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
@@ -267,24 +267,24 @@ class AdventureResultScreen(Screen):
 
         hp_msg = self.avatar.name + " HP: " + str(self.avatar.hp)
 
-        # Render mission title and position slightly above center on bg_surface.
+        # Render mission title and position slightly above center on bg.surface.
         self.title_msg_image = self.title_font.render(
                 self.mission.title, True, self.text_color)
         self.title_msg_image_rect = self.title_msg_image.get_rect()
-        self.title_msg_image_rect.centerx = self.bg_surface_rect.centerx
-        self.title_msg_image_rect.bottom = self.bg_surface_rect.centery - 5
+        self.title_msg_image_rect.centerx = self.bg_rect.centerx
+        self.title_msg_image_rect.bottom = self.bg_rect.centery - 5
 
-        # Render result_msg and position slightly below center on bg_surface.
+        # Render result_msg and position slightly below center on bg.surface.
         self.result_msg_image = self.basic_font.render(
                 result_msg, True, self.text_color)
         self.result_msg_image_rect = self.result_msg_image.get_rect()
-        self.result_msg_image_rect.centerx = self.bg_surface_rect.centerx
-        self.result_msg_image_rect.top = self.bg_surface_rect.centery + 5
+        self.result_msg_image_rect.centerx = self.bg_rect.centerx
+        self.result_msg_image_rect.top = self.bg_rect.centery + 5
 
-        # Render hp_msg and position below result_msg on bg_surface.
+        # Render hp_msg and position below result_msg on bg.surface.
         self.hp_msg_image = self.basic_font.render(
                 hp_msg, True, self.text_color)
         self.hp_msg_image_rect = self.hp_msg_image.get_rect()
-        self.hp_msg_image_rect.centerx = self.bg_surface_rect.centerx
+        self.hp_msg_image_rect.centerx = self.bg_rect.centerx
         self.hp_msg_image_rect.top = self.result_msg_image_rect.bottom + 5
 

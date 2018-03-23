@@ -18,7 +18,7 @@ class Statistics():
         else:
             self.retreats += 1
 
-    def draw(self, bg_surface):
+    def draw(self, bg):
         """Draw running statistics of wins and losses."""
         text_color = (100, 100, 100)
         font = pygame.font.SysFont(None, 32)
@@ -45,7 +45,7 @@ class Statistics():
         retreats_image_rect.left = 10
 
         # Draw stats.
-        bg_surface.blit(wins_image, wins_image_rect)
-        bg_surface.blit(losses_image, losses_image_rect)
-        bg_surface.blit(retreats_image, retreats_image_rect)
+        bg.surface.blit(wins_image, wins_image_rect)
+        bg.surface.blit(losses_image, losses_image_rect)
+        bg.surface.blit(retreats_image, retreats_image_rect)
 

@@ -1,5 +1,4 @@
 import unittest
-import logging
 
 import actor as a
 import mission as m

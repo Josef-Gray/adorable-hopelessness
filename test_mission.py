@@ -1,8 +1,8 @@
 import unittest
 import logging
 
-from actor import Avatar
-from mission import Mission
+import actor as a
+import mission as m
 
 class CombatBalanceTestCase(unittest.TestCase):
     """Tests for combat win and loss balance."""
@@ -12,16 +12,16 @@ class CombatBalanceTestCase(unittest.TestCase):
         losses = 0
         retreats = 0
         runs = 10000
-        avatar = Avatar()
-        mission = Mission()
+        avatar = a.Avatar()
+        mission = m.Mission()
 
         for i in range(runs):
             avatar.heal()
             mission.__init__()
             mission_result = mission.resolve_combat(avatar)
-            if mission_result is False:
+            if mission_result == m.LOSE:
                 losses += 1
-            elif mission_result is None:
+            elif mission_result == m.RETREAT:
                 retreats += 1
 
         loss_ratio = losses / runs
@@ -43,15 +43,15 @@ class MissionTestCase(unittest.TestCase):
 
     def test_avatar_wins(self):
         """Test avatar winning."""
-        avatar = Avatar()
-        mission = Mission()
+        avatar = a.Avatar()
+        mission = m.Mission()
         mission.enemy.hp = 1
-        self.assertTrue(mission.resolve_combat(avatar))
+        self.assertEqual(mission.resolve_combat(avatar), m.WIN)
 
     def test_avatar_loses(self):
         """Test avatar losing."""
-        avatar = Avatar()
-        mission = Mission()
-        avatar.hp = 1
-        self.assertFalse(mission.resolve_combat(avatar))
+        avatar = a.Avatar()
+        mission = m.Mission()
+        avatar.hp = 0
+        self.assertEqual(mission.resolve_combat(avatar), m.LOSE)
 

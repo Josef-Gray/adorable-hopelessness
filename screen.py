@@ -3,6 +3,7 @@
 import sys
 import pygame
 import re
+import mission
 
 class Screen():
     """A representation of a game screen."""
@@ -258,10 +259,10 @@ class AdventureResultScreen(Screen):
 
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
-        if self.mission.result is None:
-            result_msg = self.avatar.name + " withdrew."
-        elif self.mission.result is True:
+        if self.mission.result == mission.WIN:
             result_msg = "Success! " + self.avatar.name + " won."
+        elif self.mission.result == mission.RETREAT:
+            result_msg = self.avatar.name + " withdrew."
         else:
             result_msg = "Failure! " + self.avatar.name + " defeated."
 

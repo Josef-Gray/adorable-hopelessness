@@ -7,6 +7,11 @@ from itertools import cycle
 import flags
 from actor import Actor, Avatar
 
+# "Constants" for combat result
+WIN = 0
+LOSE = 1
+RETREAT = 2
+
 class Mission():
     """A representation of a combat mission."""
 
@@ -29,7 +34,7 @@ class Mission():
             avatar: The player character.
             
         Returns:
-            (bool) True if avatar wins, false if avatar loses.
+            (int) "Constants" WIN, RETREAT, or LOSE
         """
         # Randomize whether avatar or enemy hits first.
         actors = [avatar, self.enemy]
@@ -54,14 +59,14 @@ class Mission():
         # Report results.
         if self.enemy.hp <= 0:
             logging.info(avatar.name + " won.")
-            self.result = True
+            self.result = WIN
         elif avatar.hp > 0:
             logging.info(avatar.name + " withdrew.")
-            self.result = None
+            self.result = RETREAT
         else:
             avatar.hp = 0
             logging.info(avatar.name + " defeated.")
-            self.result = False
+            self.result = LOSE
 
         return self.result
 

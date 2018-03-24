@@ -1,6 +1,7 @@
 """Classes for displaying win/loss statistics."""
 
 import pygame
+import mission
 
 class Statistics():
     """Win and loss statistics."""
@@ -11,9 +12,9 @@ class Statistics():
         self.retreats = 0
 
     def update(self, mission_result):
-        if mission_result is True:
+        if mission_result == mission.WIN:
             self.wins += 1
-        elif mission_result is False:
+        elif mission_result == mission.LOSE:
             self.losses += 1
         else:
             self.retreats += 1

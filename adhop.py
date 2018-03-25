@@ -30,7 +30,7 @@ def main():
     # Loop ready / results
     while True:
         # Ready to adventure?
-        screen.ReadyScreen(bg).run()
+        screen.ReadyScreen(bg, player).run()
 
         # Choose an adventure
         screen.AdventureMenuScreen(bg, mission_list).run()

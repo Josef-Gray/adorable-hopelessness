@@ -135,7 +135,11 @@ class CharacterScreen(Screen):
 
     def catch_special_events(self, event):
         """Catch screen-specific events."""
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_position = pygame.mouse.get_pos()
+            if self.inst_rect.collidepoint(mouse_position):
+                self.active = False
+        elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.active = False
 
@@ -144,6 +148,7 @@ class CharacterScreen(Screen):
         self.bg.surface.blit(self.name_image, self.name_rect)
         self.bg.surface.blit(self.hp_image, self.hp_rect)
         self.bg.surface.blit(self.damage_image, self.damage_rect)
+        self.bg.surface.blit(self.inst_image, self.inst_rect)
 
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
@@ -167,6 +172,15 @@ class CharacterScreen(Screen):
         self.damage_rect = self.damage_image.get_rect()
         self.damage_rect.centerx = self.bg_rect.centerx
         self.damage_rect.top = self.hp_rect.bottom + 5
+
+        # Render instruction and position at the center bottom of
+        # bg.surface.
+        inst_msg = "Press ESCAPE to return"
+        self.inst_image = self.alt_font.render(
+                inst_msg, True, self.alt_text_color)
+        self.inst_rect = self.inst_image.get_rect()
+        self.inst_rect.centerx = self.bg_rect.centerx
+        self.inst_rect.bottom = self.bg_rect.bottom - 10
 
 
 class ReadyScreen(Screen):

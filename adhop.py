@@ -3,7 +3,7 @@ import pygame
 
 import flags
 from background import Background
-from actor import Avatar
+from actor import Player
 from stats import Statistics
 from mission import MissionList
 import screen
@@ -18,8 +18,8 @@ def main():
     pygame.display.set_caption("Adorable Hopelessness")
 
     # Set player name
-    avatar = Avatar()
-    screen.PlayerNameScreen(bg, avatar).run()
+    player = Player()
+    screen.PlayerNameScreen(bg, player).run()
 
     # Initialize stats
     stats = Statistics()
@@ -36,7 +36,7 @@ def main():
         screen.AdventureMenuScreen(bg, mission_list).run()
 
         # Run adventure
-        screen.AdventureResultScreen(bg, stats, avatar,
+        screen.AdventureResultScreen(bg, stats, player,
                 mission_list.get_active_mission()).run()
 
 

@@ -75,10 +75,10 @@ class Screen():
 class PlayerNameScreen(Screen):
     """The player name input screen."""
 
-    def __init__(self, bg, avatar):
+    def __init__(self, bg, player):
         """Initialize screen attributes."""
         super().__init__(bg)
-        self.avatar = avatar
+        self.player = player
         self.name_input = ''
 
     def catch_special_events(self, event):
@@ -90,10 +90,10 @@ class PlayerNameScreen(Screen):
             # Backspace deletes the last letter
             elif event.key == pygame.K_BACKSPACE:
                 self.name_input = self.name_input[:-1]
-            # Return ends name input and creates avatar
+            # Return ends name input and creates player
             elif event.key == pygame.K_RETURN:
-                self.avatar.name = self.name_input
-                self.avatar.log_properties()
+                self.player.name = self.name_input
+                self.player.log_properties()
                 self.active = False
 
     def draw_objects(self):
@@ -229,18 +229,18 @@ class AdventureMenuScreen(Screen):
 class AdventureResultScreen(Screen):
     """The adventure result screen."""
 
-    def __init__(self, bg, stats, avatar, mission):
+    def __init__(self, bg, stats, player, mission):
         """Initialize screen attributes."""
         self.stats = stats
-        self.avatar = avatar
+        self.player = player
         self.mission = mission
 
-        # Avatar and enemy start with full hp.
-        self.avatar.heal()
+        # Player and enemy start with full hp.
+        self.player.heal()
         self.mission.enemy.heal()
 
         # Resolve combat result.
-        self.mission.resolve_combat(avatar)
+        self.mission.resolve_combat(player)
         self.stats.update(self.mission.result)
 
         super().__init__(bg)
@@ -260,13 +260,13 @@ class AdventureResultScreen(Screen):
     def prep_objects(self):
         """Prepare fixed objects for drawing to the screen."""
         if self.mission.result == mission.WIN:
-            result_msg = "Success! " + self.avatar.name + " won."
+            result_msg = "Success! " + self.player.name + " won."
         elif self.mission.result == mission.RETREAT:
-            result_msg = self.avatar.name + " withdrew."
+            result_msg = self.player.name + " withdrew."
         else:
-            result_msg = "Failure! " + self.avatar.name + " defeated."
+            result_msg = "Failure! " + self.player.name + " defeated."
 
-        hp_msg = self.avatar.name + " HP: " + str(self.avatar.hp)
+        hp_msg = self.player.name + " HP: " + str(self.player.hp)
 
         # Render mission title and position slightly above center on bg.surface.
         self.title_msg_image = self.title_font.render(

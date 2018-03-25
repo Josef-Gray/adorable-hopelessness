@@ -33,10 +33,10 @@ class Actor():
             self.hp = self.max_hp
 
 
-class Avatar(Actor):
+class Player(Actor):
     """A representation of a player character."""
 
-    def __init__(self, name='Avatar'):
+    def __init__(self, name='Player'):
         """Initialize character attributes."""
         super().__init__()
         self.name = name

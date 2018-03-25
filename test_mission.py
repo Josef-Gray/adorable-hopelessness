@@ -6,18 +6,18 @@ import mission as m
 class CombatBalanceTestCase(unittest.TestCase):
     """Tests for combat win and loss balance."""
 
-    def test_avatar_l1_enemy_l1(self):
-        """Test level 1 avatar vs level 1 enemy."""
+    def test_player_l1_enemy_l1(self):
+        """Test level 1 player vs level 1 enemy."""
         losses = 0
         retreats = 0
         runs = 10000
-        avatar = a.Avatar()
+        player = a.Player()
         mission = m.Mission()
 
         for i in range(runs):
-            avatar.heal()
+            player.heal()
             mission.__init__()
-            mission_result = mission.resolve_combat(avatar)
+            mission_result = mission.resolve_combat(player)
             if mission_result == m.LOSE:
                 losses += 1
             elif mission_result == m.RETREAT:
@@ -40,17 +40,17 @@ class CombatBalanceTestCase(unittest.TestCase):
 class MissionTestCase(unittest.TestCase):
     """Tests for combat results."""
 
-    def test_avatar_wins(self):
-        """Test avatar winning."""
-        avatar = a.Avatar()
+    def test_player_wins(self):
+        """Test player winning."""
+        player = a.Player()
         mission = m.Mission()
         mission.enemy.hp = 1
-        self.assertEqual(mission.resolve_combat(avatar), m.WIN)
+        self.assertEqual(mission.resolve_combat(player), m.WIN)
 
-    def test_avatar_loses(self):
-        """Test avatar losing."""
-        avatar = a.Avatar()
+    def test_player_loses(self):
+        """Test player losing."""
+        player = a.Player()
         mission = m.Mission()
-        avatar.hp = 0
-        self.assertEqual(mission.resolve_combat(avatar), m.LOSE)
+        player.hp = 0
+        self.assertEqual(mission.resolve_combat(player), m.LOSE)
 

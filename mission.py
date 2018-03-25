@@ -5,7 +5,7 @@ from random import randrange, shuffle, choice
 from itertools import cycle
 
 import flags
-from actor import Actor, Avatar
+from actor import Actor, Player
 
 # "Constants" for combat result
 WIN = 0
@@ -27,17 +27,17 @@ class Mission():
         # Default result is None.
         self.result = None
 
-    def resolve_combat(self, avatar):
+    def resolve_combat(self, player):
         """Resolve combat.
         
         Args:
-            avatar: The player character.
+            player: The player character.
             
         Returns:
             (int) "Constants" WIN, RETREAT, or LOSE
         """
-        # Randomize whether avatar or enemy hits first.
-        actors = [avatar, self.enemy]
+        # Randomize whether player or enemy hits first.
+        actors = [player, self.enemy]
         shuffle(actors)
 
         # Perform combat
@@ -53,19 +53,19 @@ class Mission():
                     + actors[i-1].name + " " + str(actors[i-1].hp)
                     + " HP remaining.")
 
-        logging.debug(avatar.name + ": " + str(avatar.hp) + "HP")
+        logging.debug(player.name + ": " + str(player.hp) + "HP")
         logging.debug(self.enemy.name + ":  " + str(self.enemy.hp) + "HP")
 
         # Report results.
         if self.enemy.hp <= 0:
-            logging.info(avatar.name + " won.")
+            logging.info(player.name + " won.")
             self.result = WIN
-        elif avatar.hp > 0:
-            logging.info(avatar.name + " withdrew.")
+        elif player.hp > 0:
+            logging.info(player.name + " withdrew.")
             self.result = RETREAT
         else:
-            avatar.hp = 0
-            logging.info(avatar.name + " defeated.")
+            player.hp = 0
+            logging.info(player.name + " defeated.")
             self.result = LOSE
 
         return self.result
@@ -100,7 +100,7 @@ class MissionList():
 # Execute this only if running as a standalone
 if __name__ == "__main__":
     flags.init_flags("Combat mission test module.")
-    avatar = Avatar()
+    player = Player()
     mission = Mission()
-    logging.debug(mission.resolve_combat(avatar))
+    logging.debug(mission.resolve_combat(player))
 
